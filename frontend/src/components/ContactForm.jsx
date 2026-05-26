@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { User, Mail, MessageSquare, Send, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
+import { User, Mail, MessageSquare, Send, Loader2, AlertCircle } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState(null); // { type: 'success' | 'error', message: '' }
 
   // Validator function
   const validateForm = () => {
@@ -47,7 +47,6 @@ export default function ContactForm() {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    setSubmitStatus(null);
 
     // Client-side validation check
     if (!validateForm()) {
@@ -86,25 +85,16 @@ export default function ContactForm() {
       });
 
       if (fsResponse.ok) {
-        setSubmitStatus({
-          type: 'success',
-          message: 'Form Submitted Successfully',
-        });
+        toast.success('Form Submitted Successfully');
         // Clear all form inputs
         setFormData({ name: '', email: '', message: '' });
       } else {
         const fsResult = await fsResponse.json();
-        setSubmitStatus({
-          type: 'error',
-          message: fsResult.errors?.[0]?.message || 'Formspree submission failed. Please try again.',
-        });
+        toast.error(fsResult.errors?.[0]?.message || 'Formspree submission failed. Please try again.');
       }
     } catch (error) {
       console.error('Submission error:', error);
-      setSubmitStatus({
-        type: 'error',
-        message: 'Something went wrong. Please check your network connection and try again.',
-      });
+      toast.error('Something went wrong. Please check your network connection and try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -139,29 +129,6 @@ export default function ContactForm() {
           transition={{ duration: 0.5 }}
           className="glass-card rounded-3xl p-6 sm:p-8 border border-slate-200/50 dark:border-slate-800/30 shadow-xl"
         >
-          {/* Status Message Panel */}
-          <AnimatePresence>
-            {submitStatus && (
-              <motion.div
-                initial={{ opacity: 0, height: 0, y: -10 }}
-                animate={{ opacity: 1, height: 'auto', y: 0 }}
-                exit={{ opacity: 0, height: 0, y: -10 }}
-                className={`mb-6 flex items-start gap-3 rounded-xl p-4 border text-sm font-semibold leading-relaxed ${
-                  submitStatus.type === 'success'
-                    ? 'bg-emerald-50 text-emerald-800 border-emerald-250 dark:bg-emerald-950/20 dark:text-emerald-300 dark:border-emerald-900/30'
-                    : 'bg-rose-50 text-rose-800 border-rose-250 dark:bg-rose-950/20 dark:text-rose-300 dark:border-rose-900/30'
-                }`}
-              >
-                {submitStatus.type === 'success' ? (
-                  <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-emerald-600 dark:text-emerald-400 mt-0.5" />
-                ) : (
-                  <AlertCircle className="h-5 w-5 flex-shrink-0 text-rose-600 dark:text-rose-400 mt-0.5" />
-                )}
-                <span>{submitStatus.message}</span>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
           <form onSubmit={handleFormSubmit} className="space-y-6">
             
             {/* Full Name field */}

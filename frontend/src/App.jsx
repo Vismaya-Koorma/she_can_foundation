@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import About from './components/About';
-import ContactForm from './components/ContactForm';
 import Footer from './components/Footer';
+import Home from './pages/Home';
+import { Toaster } from 'react-hot-toast';
 
 export default function App() {
   // Read theme from localStorage or default to system preference
@@ -29,15 +28,12 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 transition-colors duration-350 dark:bg-slate-950 dark:text-slate-100 selection:bg-primary-500 selection:text-white">
+      <Toaster position="bottom-right" />
       {/* Navigation Header */}
       <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
       
-      {/* Main Sections */}
-      <main>
-        <Hero />
-        <About />
-        <ContactForm />
-      </main>
+      {/* Main Content */}
+      <Home />
 
       {/* Footer Area */}
       <Footer />

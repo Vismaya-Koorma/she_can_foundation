@@ -74,3 +74,28 @@ exports.submitContactForm = async (req, res) => {
     });
   }
 };
+
+/**
+ * Fetches all contact form messages
+ * Route: GET /api/messages
+ */
+exports.getAllMessages = async (req, res) => {
+  try {
+    const query = 'SELECT * FROM contact_messages ORDER BY created_at DESC';
+    const [messages] = await db.execute(query);
+
+    return res.status(200).json({
+      success: true,
+      count: messages.length,
+      data: messages
+    });
+  } catch (error) {
+    console.error('Error fetching messages from MySQL:', error);
+    
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to fetch messages. Please check your database connection.',
+      error: error.message
+    });
+  }
+};

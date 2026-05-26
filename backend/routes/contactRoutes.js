@@ -5,4 +5,7 @@ const contactController = require('../controllers/contactController');
 // Define the POST /api/contact route
 router.post('/contact', contactController.submitContactForm);
 
+// Define the GET /api/messages route
+router.get('/messages', contactController.getAllMessages);
+
 module.exports = router;
