@@ -18,15 +18,6 @@ export default function Hero() {
         {/* Left Column: Text Content */}
         <div className="text-center lg:text-left pt-10 lg:pt-0">
           
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center space-x-2 rounded-full border border-primary-200/60 bg-primary-50/60 px-4 py-1.5 text-xs sm:text-sm font-semibold text-primary-700 dark:border-primary-800/40 dark:bg-primary-900/40 dark:text-primary-300 mb-6 backdrop-blur-md"
-          >
-            <Sparkles className="h-4 w-4 text-primary-500 animate-pulse" />
-            <span>Youth-Driven Impact</span>
-          </motion.div>
 
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -88,21 +79,6 @@ export default function Hero() {
               className="w-full h-[500px] object-cover object-center transition-transform duration-700 hover:scale-105"
             />
           </div>
-          {/* Floating decorative card */}
-          <motion.div 
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.8, duration: 0.6 }}
-            className="absolute -bottom-6 -left-6 glass-card p-4 rounded-2xl border border-white/20 shadow-xl bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg flex items-center gap-4"
-          >
-            <div className="w-12 h-12 rounded-full bg-accent-100 dark:bg-accent-900/50 flex items-center justify-center text-accent-600 dark:text-accent-400">
-              <Sparkles className="w-6 h-6" />
-            </div>
-            <div>
-              <p className="text-sm font-bold text-slate-900 dark:text-white">Join the Movement</p>
-              <p className="text-xs text-slate-600 dark:text-slate-400">Make an impact today</p>
-            </div>
-          </motion.div>
         </motion.div>
 
       </div>

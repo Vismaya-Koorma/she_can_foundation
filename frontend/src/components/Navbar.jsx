@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Menu, X, Sun, Moon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -7,9 +8,10 @@ export default function Navbar({ darkMode, setDarkMode }) {
 
   // Navigation Links
   const navLinks = [
-    { name: 'Home', href: '#home' },
-    { name: 'About Us', href: '#about' },
-    { name: 'Get In Touch', href: '#contact' },
+    { name: 'Home', href: '/she_can_foundation/' },
+    { name: 'About Us', href: '/she_can_foundation/#about' },
+    { name: 'Volunteer', href: '/she_can_foundation/#volunteer' },
+    { name: 'Get In Touch', href: '/she_can_foundation/#contact' },
   ];
 
   return (
@@ -19,11 +21,11 @@ export default function Navbar({ darkMode, setDarkMode }) {
           
           {/* Logo / Brand Name */}
           <div className="flex-shrink-0">
-            <a href="#home" className="flex items-center space-x-2">
+            <Link to="/" className="flex items-center space-x-2">
               <span className="text-xl font-bold bg-gradient-to-r from-primary-600 to-accent-500 bg-clip-text text-transparent dark:from-primary-400 dark:to-accent-400 transition-all hover:scale-105 duration-300 block">
                 She Can Foundation
               </span>
-            </a>
+            </Link>
           </div>
 
           {/* Desktop Nav Items */}
@@ -33,6 +35,19 @@ export default function Navbar({ darkMode, setDarkMode }) {
                 key={link.name}
                 href={link.href}
                 className="text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-300 dark:hover:text-primary-400 transition-colors"
+                onClick={(e) => {
+                  if (link.href.includes('#')) {
+                    // If we are already on home page, just scroll
+                    const isHomePage = window.location.pathname === '/she_can_foundation/' || 
+                                     window.location.pathname === '/she_can_foundation';
+                    if (isHomePage) {
+                      e.preventDefault();
+                      const id = link.href.split('#')[1];
+                      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+                      if (isOpen) setIsOpen(false);
+                    }
+                  }
+                }}
               >
                 {link.name}
               </a>
@@ -98,7 +113,18 @@ export default function Navbar({ darkMode, setDarkMode }) {
                 <a
                   key={link.name}
                   href={link.href}
-                  onClick={() => setIsOpen(false)}
+                  onClick={(e) => {
+                    setIsOpen(false);
+                    if (link.href.includes('#')) {
+                      const isHomePage = window.location.pathname === '/she_can_foundation/' || 
+                                       window.location.pathname === '/she_can_foundation';
+                      if (isHomePage) {
+                        e.preventDefault();
+                        const id = link.href.split('#')[1];
+                        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+                      }
+                    }
+                  }}
                   className="block rounded-md px-3 py-2.5 text-base font-medium text-slate-700 hover:bg-slate-100 hover:text-primary-600 dark:text-slate-300 dark:hover:bg-slate-850 dark:hover:text-primary-400 transition-colors"
                 >
                   {link.name}
