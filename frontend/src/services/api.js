@@ -17,14 +17,18 @@ export const submitContact = async (formData) => {
 };
 
 /**
- * Service to handle volunteer joining submissions
+ * Service to handle volunteer joining submissions via Formspree
  */
 export const submitJoinForm = async (formData) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/join`, formData);
+    const response = await axios.post('https://formspree.io/f/mpqnowpb', formData, {
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
     return response.data;
   } catch (error) {
-    throw error.response?.data || { message: 'Failed to submit the form' };
+    throw error.response?.data || { message: 'Failed to submit the form through Formspree' };
   }
 };
 

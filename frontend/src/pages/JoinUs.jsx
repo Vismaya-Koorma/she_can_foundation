@@ -88,11 +88,6 @@ export default function JoinUs() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 text-sm font-semibold mb-6">
-              <Sparkles className="w-4 h-4" />
-              Join Our Mission
-            </div>
-            
             <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white leading-tight mb-6">
               Become Part of <br />
               <span className="bg-gradient-to-r from-primary-600 to-accent-500 bg-clip-text text-transparent">
