@@ -291,10 +291,14 @@ export default function VolunteerProgramDetail() {
                   <p className="text-slate-300 mb-8 text-lg">
                     Join the {program.title} team today and contribute to a cause that truly matters.
                   </p>
-                  <button className={`px-8 py-4 rounded-xl bg-gradient-to-r ${program.color} text-white font-bold text-lg hover:scale-105 transition-transform shadow-lg flex items-center gap-2`}>
+                  <Link 
+                    to="/join-us"
+                    state={{ interest: program.title }}
+                    className={`px-8 py-4 rounded-xl bg-gradient-to-r ${program.color} text-white font-bold text-lg hover:scale-105 transition-transform shadow-lg flex items-center justify-center gap-2`}
+                  >
                     Join Us Now
                     <ArrowRight className="w-5 h-5" />
-                  </button>
+                  </Link>
                 </div>
               </motion.div>
             </motion.div>

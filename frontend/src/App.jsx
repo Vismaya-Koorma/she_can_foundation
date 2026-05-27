@@ -1,10 +1,54 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import VolunteerProgramDetail from './pages/VolunteerProgramDetail';
+import JoinUs from './pages/JoinUs';
 import { Toaster } from 'react-hot-toast';
+
+/**
+ * PageTransition wrapper to handle animations for every route change
+ */
+const PageTransition = ({ children }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.4, ease: "easeInOut" }}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
+function AnimatedRoutes() {
+  const location = useLocation();
+
+  return (
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={
+          <PageTransition>
+            <Home />
+          </PageTransition>
+        } />
+        <Route path="/program/:slug" element={
+          <PageTransition>
+            <VolunteerProgramDetail />
+          </PageTransition>
+        } />
+        <Route path="/join-us" element={
+          <PageTransition>
+            <JoinUs />
+          </PageTransition>
+        } />
+      </Routes>
+    </AnimatePresence>
+  );
+}
 
 export default function App() {
   // Read theme from localStorage or default to system preference
@@ -32,14 +76,12 @@ export default function App() {
     <Router basename="/she_can_foundation">
       <div className="min-h-screen bg-slate-50 text-slate-900 transition-colors duration-350 dark:bg-slate-950 dark:text-slate-100 selection:bg-primary-500 selection:text-white">
         <Toaster position="bottom-right" />
+        
         {/* Navigation Header */}
         <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
         
-        {/* Main Content Areas */}
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/program/:slug" element={<VolunteerProgramDetail />} />
-        </Routes>
+        {/* Animated Routes Container */}
+        <AnimatedRoutes />
 
         {/* Footer Area */}
         <Footer />

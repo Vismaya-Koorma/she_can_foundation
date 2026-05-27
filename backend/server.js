@@ -3,6 +3,7 @@ const cors = require('cors');
 require('dotenv').config();
 
 const contactRoutes = require('./routes/contactRoutes');
+const volunteerRoutes = require('./routes/volunteerRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -25,6 +26,7 @@ app.get('/', (req, res) => {
 // Mount our API routes under /api
 // This means contact form submission will be on: POST http://localhost:5000/api/contact
 app.use('/api', contactRoutes);
+app.use('/api', volunteerRoutes);
 
 // Fallback for handling 404 routes
 app.use((req, res) => {

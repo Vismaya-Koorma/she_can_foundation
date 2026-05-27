@@ -1,18 +1,51 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink, Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, Sun, Moon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Navbar({ darkMode, setDarkMode }) {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   // Navigation Links
   const navLinks = [
-    { name: 'Home', href: '/she_can_foundation/' },
-    { name: 'About Us', href: '/she_can_foundation/#about' },
-    { name: 'Volunteer', href: '/she_can_foundation/#volunteer' },
-    { name: 'Get In Touch', href: '/she_can_foundation/#contact' },
+    { name: 'Home', href: '/', isHash: true },
+    { name: 'About Us', href: '/#about', isHash: true },
+    { name: 'Volunteer', href: '/#volunteer', isHash: true },
+    { name: 'Join Us', href: '/join-us', isHash: false },
+    { name: 'Get In Touch', href: '/#contact', isHash: true },
   ];
+
+  const handleNavClick = (e, link) => {
+    if (link.isHash) {
+      e.preventDefault();
+      const targetId = link.href.split('#')[1] || 'home';
+      
+      const isHomePage = location.pathname === '/she_can_foundation/' || 
+                       location.pathname === '/she_can_foundation';
+
+      if (!isHomePage) {
+        navigate('/');
+        setTimeout(() => {
+          const element = document.getElementById(targetId);
+          if (element) element.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      } else {
+        const element = document.getElementById(targetId);
+        if (element) element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+    setIsOpen(false);
+  };
+
+  const navLinkStyles = ({ isActive }) => {
+    const base = "text-sm font-medium transition-colors relative py-1 px-0.5";
+    const active = isActive 
+      ? "text-primary-600 dark:text-primary-400 after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-primary-600 dark:after:bg-primary-400 after:rounded-full" 
+      : "text-slate-600 hover:text-primary-600 dark:text-slate-300 dark:hover:text-primary-400 after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary-600 dark:after:bg-primary-400 after:rounded-full after:transition-all hover:after:w-full";
+    return `${base} ${active}`;
+  };
 
   return (
     <nav className="sticky top-0 z-50 w-full glass-panel border-b border-slate-200/50 dark:border-slate-800/30 transition-colors duration-300">
@@ -31,26 +64,14 @@ export default function Navbar({ darkMode, setDarkMode }) {
           {/* Desktop Nav Items */}
           <div className="hidden md:flex items-center space-x-8">
             {navLinks.map((link) => (
-              <a
+              <NavLink
                 key={link.name}
-                href={link.href}
-                className="text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-300 dark:hover:text-primary-400 transition-colors"
-                onClick={(e) => {
-                  if (link.href.includes('#')) {
-                    // If we are already on home page, just scroll
-                    const isHomePage = window.location.pathname === '/she_can_foundation/' || 
-                                     window.location.pathname === '/she_can_foundation';
-                    if (isHomePage) {
-                      e.preventDefault();
-                      const id = link.href.split('#')[1];
-                      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-                      if (isOpen) setIsOpen(false);
-                    }
-                  }
-                }}
+                to={link.href}
+                className={navLinkStyles}
+                onClick={(e) => handleNavClick(e, link)}
               >
                 {link.name}
-              </a>
+              </NavLink>
             ))}
 
             {/* Dark Mode Toggle Button */}
@@ -110,25 +131,18 @@ export default function Navbar({ darkMode, setDarkMode }) {
           >
             <div className="space-y-1 px-2 pb-4 pt-2">
               {navLinks.map((link) => (
-                <a
+                <NavLink
                   key={link.name}
-                  href={link.href}
-                  onClick={(e) => {
-                    setIsOpen(false);
-                    if (link.href.includes('#')) {
-                      const isHomePage = window.location.pathname === '/she_can_foundation/' || 
-                                       window.location.pathname === '/she_can_foundation';
-                      if (isHomePage) {
-                        e.preventDefault();
-                        const id = link.href.split('#')[1];
-                        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-                      }
-                    }
-                  }}
-                  className="block rounded-md px-3 py-2.5 text-base font-medium text-slate-700 hover:bg-slate-100 hover:text-primary-600 dark:text-slate-300 dark:hover:bg-slate-850 dark:hover:text-primary-400 transition-colors"
+                  to={link.href}
+                  onClick={(e) => handleNavClick(e, link)}
+                  className={({ isActive }) => `block rounded-md px-3 py-2.5 text-base font-medium transition-colors ${
+                    isActive 
+                      ? 'bg-primary-50 text-primary-600 dark:bg-primary-900/20 dark:text-primary-400' 
+                      : 'text-slate-700 hover:bg-slate-100 hover:text-primary-600 dark:text-slate-300 dark:hover:bg-slate-850 dark:hover:text-primary-400'
+                  }`}
                 >
                   {link.name}
-                </a>
+                </NavLink>
               ))}
             </div>
           </motion.div>
